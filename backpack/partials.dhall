@@ -8,7 +8,7 @@ in  let fn = ../common/functions.dhall
 in  let partialLibrary = common.Library
         // { build-depends =
              [ packages.base
-             , packages.hasktorch-partial
+             , packages.hasktorch-signatures-partial
              , packages.hasktorch-signatures
              ]
            }

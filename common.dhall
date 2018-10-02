@@ -24,9 +24,9 @@ in  let packages =
   , hasktorch-types-th  = fn.anyver "hasktorch-types-th"
   , hasktorch-types-thc = fn.anyver "hasktorch-types-thc"
 
-  , hasktorch-signatures-types = fn.anyver "hasktorch-signatures-types"
-  , hasktorch-signatures       = fn.anyver "hasktorch-signatures"
-  , hasktorch-partial          = fn.anyver "hasktorch-partial"
+  , hasktorch-signatures         = fn.anyver "hasktorch-signatures"
+  , hasktorch-signatures-types   = fn.anyver "hasktorch-signatures-types"
+  , hasktorch-signatures-partial = fn.anyver "hasktorch-signatures-partial"
 
   , QuickCheck = fn.anyver "QuickCheck"
   , containers = fn.anyver "containers"
