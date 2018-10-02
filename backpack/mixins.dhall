@@ -4,6 +4,16 @@ in let common = ../common.dhall
 in let packages = common.packages
 in let cabalvars = common.cabalvars
 in let fn = ../common/functions.dhall
+in let indef-support =
+    λ(isth : Bool)
+    → let lib = fn.showlib isth
+    in
+      [ { rename = "Torch.Sig.Index.Tensor"    , to = "Torch.FFI.${lib}.Long.Tensor"  }
+      , { rename = "Torch.Sig.Index.TensorFree", to = "Torch.FFI.${lib}.Long.FreeTensor"  }
+      , { rename = "Torch.Sig.Mask.Tensor"     , to = "Torch.FFI.${lib}.Byte.Tensor"  }
+      , { rename = "Torch.Sig.Mask.TensorFree" , to = "Torch.FFI.${lib}.Byte.FreeTensor"  }
+      , { rename = "Torch.Sig.Mask.MathReduce" , to = "Torch.FFI.${lib}.Byte.TensorMath"  }
+      ]
 
 in let unsigned =
     λ(isth : Bool) →
@@ -70,7 +80,8 @@ in let floating =
             (if isth then "Torch.Undefined.${ttype}.Tensor.Random.THC" else "Torch.FFI.THC.${ttype}.TensorRandom") }
         ]
 in
-{ unsigned = unsigned
-, signed   = signed
-, floating = floating
+{ unsigned      = unsigned
+, signed        = signed
+, floating      = floating
+, indef-support = indef-support
 }

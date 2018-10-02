@@ -93,7 +93,9 @@ in  let packages =
   , monad-loops = fn.anyver "monad-loops"
   , time = fn.anyver "time"
   , transformers = fn.anyver "transformers"
+  , cuda = fn.anyver "cuda"
 
+  , hasktorch-indef          = fn.anyver "hasktorch-indef"
   , hasktorch-indef-floating = fn.anyver "hasktorch-indef-floating"
   , hasktorch-indef-signed   = fn.anyver "hasktorch-indef-signed"
   , hasktorch-indef-unsigned = fn.anyver "hasktorch-indef-unsigned"
