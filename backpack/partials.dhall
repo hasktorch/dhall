@@ -1,10 +1,9 @@
-    let prelude = https://raw.githubusercontent.com/dhall-lang/dhall-to-cabal/master/dhall/prelude.dhall
-in  let types = https://raw.githubusercontent.com/dhall-lang/dhall-to-cabal/master/dhall/types.dhall
+   let prelude = ../dhall-to-cabal/dhall/prelude.dhall
+in let types =   ../dhall-to-cabal/dhall/types.dhall
 in  let common = ../common.dhall
 in  let packages = common.packages
 in  let cabalvars = common.cabalvars
 in  let fn = ../common/functions.dhall
-
 in  let partialLibrary = common.Library
         // { build-depends =
              [ packages.base
@@ -27,46 +26,73 @@ in  let
     , fn.renameSig "Undefined" "Tensor.Random.THC"
     ]
 
+in  let unsigned-indefiniteMixins =
+         λ(pkg : Text)
+       → λ(lib : types.Library)
+       → lib // { mixins =
+         [ { package = pkg
+           , renaming =
+             { provides = prelude.types.ModuleRenaming.default {=}
+             , requires = prelude.types.ModuleRenaming.renaming
+                 (signed-definites # [ fn.renameSig "Undefined" "Tensor.Math.Pointwise.Signed" ])
+             }
+           } ]
+       }
+
+in  let signed-indefiniteMixins =
+         λ(pkg : Text)
+       → λ(lib : types.Library)
+       → lib // { mixins =
+         [ { package = pkg
+           , renaming =
+             { provides = prelude.types.ModuleRenaming.default {=}
+             , requires = prelude.types.ModuleRenaming.renaming signed-definites
+             }
+           } ]
+       }
+
+in  let floating-indefiniteMixins =
+         λ(pkg : Text)
+       → λ(lib : types.Library)
+       → lib //
+         { reexported-modules =
+           [ fn.renameNoop "Torch.Undefined.Tensor.Math.Random.TH"
+           , fn.renameNoop "Torch.Undefined.Tensor.Random.TH"
+           , fn.renameNoop "Torch.Undefined.Tensor.Random.THC"
+           ]
+         }
+
+in  let make-partial-lib =
+         λ(name : Text)
+       → λ(sigs : Text)
+       → λ(lib : types.Library)
+       → { name = name
+         , library =
+          λ(config : types.Config)
+           → unsigned-indefiniteMixins sigs lib
+         }
 in
-{ unsigned =
+{ make-partial-lib = make-partial-lib
+, unsigned-indefiniteMixins = unsigned-indefiniteMixins
+, unsigned =
     { name = "hasktorch-partial-unsigned"
     , library =
       λ(config : types.Config)
-       → partialLibrary
-        // { mixins =
-             [ { package = "hasktorch-signatures"
-               , renaming =
-                 { provides = prelude.types.ModuleRenaming.default {=}
-                 , requires = prelude.types.ModuleRenaming.renaming
-                     (signed-definites # [ fn.renameSig "Undefined" "Tensor.Math.Pointwise.Signed" ])
-                 }
-               } ]
-           } }
-
-
+       → unsigned-indefiniteMixins "hasktorch-signatures" partialLibrary
+    }
+, signed-indefiniteMixins = signed-indefiniteMixins
 , signed =
     { name = "hasktorch-partial-signed"
     , library =
       λ(config : types.Config)
-       → partialLibrary
-        // { mixins =
-             [ { package = "hasktorch-signatures"
-               , renaming =
-                 { provides = prelude.types.ModuleRenaming.default {=}
-                 , requires = prelude.types.ModuleRenaming.renaming signed-definites
-                 }
-               } ]
-           } }
-
+       → signed-indefiniteMixins "hasktorch-signatures" partialLibrary
+    }
+, floating-indefiniteMixins = floating-indefiniteMixins
 , floating =
     { name = "hasktorch-partial-floating"
     , library =
       λ(config : types.Config)
-       → partialLibrary
-        // { reexported-modules =
-             [ fn.renameNoop "Torch.Undefined.Tensor.Math.Random.TH"
-             , fn.renameNoop "Torch.Undefined.Tensor.Random.TH"
-             , fn.renameNoop "Torch.Undefined.Tensor.Random.THC"
-             ]
-           } }
+       → floating-indefiniteMixins "hasktorch-signatures" partialLibrary
+    }
 }
+

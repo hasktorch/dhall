@@ -1,7 +1,8 @@
-   let prelude = https://raw.githubusercontent.com/dhall-lang/dhall-to-cabal/master/dhall/prelude.dhall
-in let types = https://raw.githubusercontent.com/dhall-lang/dhall-to-cabal/master/dhall/types.dhall
+   let prelude  = ../dhall-to-cabal/dhall/prelude.dhall
+in let types    = ../dhall-to-cabal/dhall/types.dhall
+in let List/map = ../Prelude/List/map
+in let getname = λ(foo : {name:Text,original:{name:Text,package:Optional Text}}) → foo.name
 in
-
 { anyver =
    λ(pkg : Text) →
    { bounds = prelude.anyVersion, package = pkg } : types.Dependency
@@ -11,6 +12,10 @@ in
    { name = pkg, original = { name = pkg, package = [] : Optional Text } }
 
 , showlib =  λ(isth : Bool) → if isth then "TH" else "THC"
+
+, getnames =
+  λ(mods : List {name:Text,original:{ name:Text, package:Optional Text}})
+  → List/map {name:Text,original:{name:Text,package:Optional Text}} Text getname mods
 
 , renameSig =
    λ(to : Text) →

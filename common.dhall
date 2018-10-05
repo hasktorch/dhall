@@ -1,5 +1,5 @@
-    let prelude = https://raw.githubusercontent.com/dhall-lang/dhall-to-cabal/master/dhall/prelude.dhall
-in  let types = https://raw.githubusercontent.com/dhall-lang/dhall-to-cabal/master/dhall/types.dhall
+   let prelude = ./dhall-to-cabal/dhall/prelude.dhall
+in let types = ./dhall-to-cabal/dhall/types.dhall
 in  let fn = ./common/functions.dhall
 in  let packages =
   { base =
@@ -27,6 +27,7 @@ in  let packages =
   , hasktorch-signatures         = fn.anyver "hasktorch-signatures"
   , hasktorch-signatures-types   = fn.anyver "hasktorch-signatures-types"
   , hasktorch-signatures-partial = fn.anyver "hasktorch-signatures-partial"
+  , hasktorch-signatures-support = fn.anyver "hasktorch-signatures-support"
 
   , QuickCheck = fn.anyver "QuickCheck"
   , containers = fn.anyver "containers"
