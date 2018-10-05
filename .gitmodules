@@ -1,0 +1,4 @@
+[submodule "dhall-to-cabal"]
+  path = dhall-to-cabal
+  url = git://github.com/dhall-lang/dhall-to-cabal.git
+  branch = 893fb52a803ebdfae1c0265d24fad11cfd831899
