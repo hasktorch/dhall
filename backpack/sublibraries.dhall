@@ -1,6 +1,8 @@
    let prelude = ../dhall-to-cabal/dhall/prelude.dhall
 in let types = ../dhall-to-cabal/dhall/types.dhall
 in let common = ../common.dhall
+in let ReexportedModule = ../common/types/ReexportedModule.dhall
+in let List/map = ../Prelude/List/map
 in let packages = common.packages
 in let cabalvars = common.cabalvars
 in let fn = ../common/functions.dhall
@@ -15,83 +17,94 @@ in let indef-unsigned-reexports
     , fn.renameNoop "Torch.Indef.Types"
     , fn.renameNoop "Torch.Indef.Storage"
     , fn.renameNoop "Torch.Indef.Storage.Copy"
+    , fn.renameNoop "Torch.Indef.Dynamic.Print"
+
     , fn.renameNoop "Torch.Indef.Dynamic.Tensor"
     , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Copy"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Index"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Masked"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Compare"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.CompareT"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Pairwise"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Pointwise"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Reduce"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Scan"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Mode"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.ScatterGather"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Sort"
-    -- , fn.renameNoop "Torch.Indef.Dynamic.Tensor.TopK"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Index"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Masked"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Compare"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.CompareT"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Pairwise"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Pointwise"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Reduce"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Scan"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Mode"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.ScatterGather"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Sort"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.TopK"
 
     , fn.renameNoop "Torch.Indef.Static.Tensor"
     , fn.renameNoop "Torch.Indef.Static.Tensor.Copy"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Index"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Masked"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Math"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Compare"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Math.CompareT"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Pairwise"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Pointwise"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Reduce"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Scan"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Mode"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.ScatterGather"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.Sort"
-    -- , fn.renameNoop "Torch.Indef.Static.Tensor.TopK"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Index"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Masked"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Compare"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.CompareT"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Pairwise"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Pointwise"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Reduce"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Scan"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Mode"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.ScatterGather"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Sort"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.TopK"
     ]
 
 in let indef-signed-reexports
   = indef-unsigned-reexports
-  -- # [ fn.renameNoop "Torch.Indef.Static.Tensor.Math.Pointwise.Signed"
-  --   , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Pointwise.Signed"
-  --   ]
+  # [ fn.renameNoop "Torch.Indef.Static.Tensor.Math.Pointwise.Signed"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Pointwise.Signed"
+    ]
+
+in let indef-floating-math-reexports
+  = indef-signed-reexports
+  # [ fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Blas"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Floating"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Lapack"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Pointwise.Floating"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Reduce.Floating"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Random.TH"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Random.THC"
+    , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Random.TH"
+
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Blas"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Floating"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Lapack"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Pointwise.Floating"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Reduce.Floating"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Random.TH"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Random.THC"
+    , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Random.TH"
+    ]
+
+in let indef-nn-exports
+  = [ "Torch.Indef.Dynamic.NN"
+    , "Torch.Indef.Dynamic.NN.Activation"
+    , "Torch.Indef.Dynamic.NN.Pooling"
+    , "Torch.Indef.Dynamic.NN.Criterion"
+
+    , "Torch.Indef.Static.NN"
+    , "Torch.Indef.Static.NN.Activation"
+    , "Torch.Indef.Static.NN.Backprop"
+    , "Torch.Indef.Static.NN.Conv1d"
+    , "Torch.Indef.Static.NN.Conv2d"
+    -- , "Torch.Indef.Static.NN.Conv3d"
+    , "Torch.Indef.Static.NN.Criterion"
+    , "Torch.Indef.Static.NN.Layers"
+    , "Torch.Indef.Static.NN.Linear"
+    , "Torch.Indef.Static.NN.Math"
+    , "Torch.Indef.Static.NN.Padding"
+    , "Torch.Indef.Static.NN.Pooling"
+    , "Torch.Indef.Static.NN.Sampling"
+    ]
+
+in let indef-nn-reexports = List/map Text ReexportedModule fn.renameNoop indef-nn-exports
 
 in let allindef-reexports
-  = indef-signed-reexports
-  -- # [ fn.renameNoop "Torch.Indef.Dynamic.NN"
-  --   , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Blas"
-  --   , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Floating"
-  --   , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Lapack"
-  --   , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Pointwise.Floating"
-  --   , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Reduce.Floating"
-
-  --   , fn.renameNoop "Torch.Indef.Static.NN"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Activation"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Backprop"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Conv1d"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Conv2d"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Criterion"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Layers"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Linear"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Math"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Padding"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Pooling"
-  --   , fn.renameNoop "Torch.Indef.Static.NN.Sampling"
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Blas"
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Floating"
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Lapack"
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Pointwise.Floating"
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Reduce.Floating"
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Random.TH"
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Random.THC"
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Random.TH"
-
-  --   , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Random.TH"
-  --   , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Random.THC"
-  --   , fn.renameNoop "Torch.Indef.Dynamic.Tensor.Math.Random.TH"
-
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Random.TH"
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Random.THC"
-  --   , fn.renameNoop "Torch.Indef.Static.Tensor.Math.Random.TH"
-  --   ]
+  = indef-floating-math-reexports
+  # indef-nn-reexports
 
 in let indef-floating-reexports
   = allindef-reexports

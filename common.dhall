@@ -29,6 +29,12 @@ in  let packages =
   , hasktorch-signatures-partial = fn.anyver "hasktorch-signatures-partial"
   , hasktorch-signatures-support = fn.anyver "hasktorch-signatures-support"
 
+  , hasktorch-indef          = fn.anyver "hasktorch-indef"
+  , hasktorch-indef-floating = fn.anyver "hasktorch-indef-floating"
+  , hasktorch-indef-signed   = fn.anyver "hasktorch-indef-signed"
+  , hasktorch-indef-unsigned = fn.anyver "hasktorch-indef-unsigned"
+  , hasktorch = fn.anyver "hasktorch"
+
   , QuickCheck = fn.anyver "QuickCheck"
   , containers = fn.anyver "containers"
   , deepseq =
@@ -88,18 +94,12 @@ in  let packages =
         (prelude.laterVersion (prelude.v "0.2.5"))
     , package = "backprop" }
   , ghc-typelits-natnormalise = fn.anyver "ghc-typelits-natnormalise"
-  , hasktorch-core = fn.anyver "hasktorch-core"
   , mtl = fn.anyver "mtl"
   , microlens-platform = fn.anyver "microlens-platform"
   , monad-loops = fn.anyver "monad-loops"
   , time = fn.anyver "time"
   , transformers = fn.anyver "transformers"
   , cuda = fn.anyver "cuda"
-
-  , hasktorch-indef          = fn.anyver "hasktorch-indef"
-  , hasktorch-indef-floating = fn.anyver "hasktorch-indef-floating"
-  , hasktorch-indef-signed   = fn.anyver "hasktorch-indef-signed"
-  , hasktorch-indef-unsigned = fn.anyver "hasktorch-indef-unsigned"
   }
 
 in  let cabalvars =
