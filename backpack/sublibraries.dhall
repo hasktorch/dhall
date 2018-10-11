@@ -1,6 +1,7 @@
    let prelude = ../dhall-to-cabal/dhall/prelude.dhall
 in let types = ../dhall-to-cabal/dhall/types.dhall
 in let common = ../common.dhall
+in let mappings = ../common/mappings.dhall
 in let ReexportedModule = ../common/types/ReexportedModule.dhall
 in let List/map = ../Prelude/List/map
 in let packages = common.packages
@@ -142,6 +143,7 @@ in let nnexports =
     , fn.renameNoop "Torch.${namespace}.NN.Sampling"
 
     , fn.renameNoop "Torch.${namespace}.Dynamic.NN"
+    , fn.renameNoop "Torch.${namespace}.Dynamic.NN.Activation"
     , fn.renameNoop "Torch.${namespace}.Dynamic.NN.Activation"
     ]
 in

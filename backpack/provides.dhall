@@ -23,6 +23,7 @@ in let unsigned =
       , { rename = "Torch.Indef.Static.Tensor.ScatterGather"          , to = "Torch.Indef.${namespace}.Tensor.ScatterGather" }
       , { rename = "Torch.Indef.Static.Tensor.Sort"                   , to = "Torch.Indef.${namespace}.Tensor.Sort" }
       , { rename = "Torch.Indef.Static.Tensor.TopK"                   , to = "Torch.Indef.${namespace}.Tensor.TopK" }
+
       , { rename = "Torch.Indef.Dynamic.Tensor"                       , to = "Torch.Indef.${namespace}.Dynamic.Tensor" }
       , { rename = "Torch.Indef.Dynamic.Tensor.Copy"                  , to = "Torch.Indef.${namespace}.Dynamic.Tensor.Copy" }
       , { rename = "Torch.Indef.Dynamic.Tensor.Index"                 , to = "Torch.Indef.${namespace}.Dynamic.Tensor.Index" }
@@ -69,16 +70,26 @@ in let floatingbase =
       , { rename = "Torch.Indef.Static.Tensor.Math.Pointwise.Floating"  , to = "Torch.Indef.${namespace}.Tensor.Math.Pointwise.Floating" }
       , { rename = "Torch.Indef.Static.Tensor.Math.Reduce.Floating"     , to = "Torch.Indef.${namespace}.Tensor.Math.Reduce.Floating" }
       , { rename = "Torch.Indef.Static.Tensor.Math.Floating"            , to = "Torch.Indef.${namespace}.Tensor.Math.Floating" }
+      ]
 
-      -- NN modules
-      , { rename = "Torch.Indef.Dynamic.NN"                             , to = "Torch.Indef.${namespace}.Dynamic.NN" }
+in let nnbase
+    = λ(isth : Bool)
+    → λ(ttype : Text)
+    → let namespace = if isth then "${ttype}" else "Cuda.${ttype}"
+    in (signed isth ttype) #
+      [ { rename = "Torch.Indef.Dynamic.NN"                             , to = "Torch.${namespace}.Dynamic.NN" }
+      , { rename = "Torch.Indef.Dynamic.NN.Activation"                  , to = "Torch.${namespace}.Dynamic.NN.Activation" }
+      , { rename = "Torch.Indef.Dynamic.NN.Pooling"                     , to = "Torch.${namespace}.Dynamic.NN.Pooling" }
+      , { rename = "Torch.Indef.Dynamic.NN.Criterion"                   , to = "Torch.${namespace}.Dynamic.NN.Criterion" }
 
-      , { rename = "Torch.Indef.Static.NN"                              , to = "Torch.Indef.${namespace}.NN" }
+      , { rename = "Torch.Indef.Static.NN"                              , to = "Torch.${namespace}.NN" }
+
       , { rename = "Torch.Indef.Static.NN"                              , to = "Torch.${namespace}.NN" }
       , { rename = "Torch.Indef.Static.NN.Activation"                   , to = "Torch.${namespace}.NN.Activation" }
       , { rename = "Torch.Indef.Static.NN.Backprop"                     , to = "Torch.${namespace}.NN.Backprop" }
       , { rename = "Torch.Indef.Static.NN.Conv1d"                       , to = "Torch.${namespace}.NN.Conv1d" }
       , { rename = "Torch.Indef.Static.NN.Conv2d"                       , to = "Torch.${namespace}.NN.Conv2d" }
+      -- , { rename = "Torch.Indef.Static.NN.Conv3d"                       , to = "Torch.${namespace}.NN.Conv3d" }
       , { rename = "Torch.Indef.Static.NN.Criterion"                    , to = "Torch.${namespace}.NN.Criterion" }
       , { rename = "Torch.Indef.Static.NN.Layers"                       , to = "Torch.${namespace}.NN.Layers" }
       , { rename = "Torch.Indef.Static.NN.Linear"                       , to = "Torch.${namespace}.NN.Linear" }
@@ -86,6 +97,7 @@ in let floatingbase =
       , { rename = "Torch.Indef.Static.NN.Padding"                      , to = "Torch.${namespace}.NN.Padding" }
       , { rename = "Torch.Indef.Static.NN.Pooling"                      , to = "Torch.${namespace}.NN.Pooling" }
       , { rename = "Torch.Indef.Static.NN.Sampling"                     , to = "Torch.${namespace}.NN.Sampling" }
+
       ]
 in let undefinedRandom =
     λ(isth : Bool) →
@@ -105,11 +117,7 @@ in let undefinedRandom =
          , { rename = "Torch.Indef.Static.Tensor.Random.THC"           , to = "Torch.Indef.${namespace}.Tensor.Random.THC" }
          , { rename = "Torch.Indef.Dynamic.Tensor.Random.THC"          , to = "Torch.Indef.${namespace}.Dynamic.Tensor.Random.THC" }
          ]
-in let floating =
-    λ(isth : Bool) →
-    λ(ttype : Text) →
-      let namespace = if isth then "${ttype}" else "Cuda.${ttype}"
-    in floatingbase isth ttype # undefinedRandom isth ttype
+in let floating = λ(isth : Bool) → λ(ttype : Text) → floatingbase isth ttype # undefinedRandom isth ttype # nnbase isth ttype
 in
 { floating = floating
 , undefinedRandom = undefinedRandom

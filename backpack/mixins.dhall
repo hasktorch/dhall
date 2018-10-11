@@ -71,13 +71,13 @@ in let floatingbase =
         , { rename = "${tsig}NN"                             , to = "${tffi}${lib}.NN.${ttype}" }
         , { rename = "${tsig}Types.NN"                       , to = "${th}Types.${lib}" }
         ]
-in let randombase =
-    λ(isth : Bool) →
-    λ(ttype : Text) →
-    λ(use_namespace : Bool) →
-    let namespace = if use_namespace then "${th}Undefined.${ttype}" else "${th}Undefined"
-    in
-     [ { rename = "${tsig}Tensor.Math.Random.TH", to =
+in let randombase
+  =  \(isth : Bool)
+  -> \(ttype : Text)
+  -> \(use_namespace : Bool)
+  -> let typespace = (if isth then "" else "Cuda.") ++ "${ttype}"
+  in let namespace = if use_namespace then "${th}Undefined.${typespace}" else "${th}Undefined"
+  in [ { rename = "${tsig}Tensor.Math.Random.TH", to =
          (if isth then "${tffi}TH.${ttype}.TensorMath" else "${namespace}.Tensor.Math.Random.TH") }
 
      , { rename = "${tsig}Tensor.Random.TH", to =
