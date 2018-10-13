@@ -23,12 +23,14 @@ in let cabalvars =
          , location = [ "https://github.com/hasktorch/hasktorch" ] : Optional Text
          }
     ] : List types.SourceRepo
-  , default-extensions = [ prelude.types.Extensions.LambdaCase True
+  , default-extensions =
+      [ prelude.types.Extensions.LambdaCase True
       , prelude.types.Extensions.DataKinds True
       , prelude.types.Extensions.TypeFamilies True
       , prelude.types.Extensions.TypeSynonymInstances True
       , prelude.types.Extensions.ScopedTypeVariables True
       , prelude.types.Extensions.FlexibleContexts True
+      , prelude.types.Extensions.CPP True
       ]
   }
 
