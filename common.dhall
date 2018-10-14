@@ -8,9 +8,7 @@ in let cabalvars =
   , build-type = [ prelude.types.BuildTypes.Simple {=} ] : Optional types.BuildType
   , homepage = "https://github.com/hasktorch/hasktorch#readme" : Text
 
-  , default-language =
-    [ < Haskell2010 = {=} | UnknownLanguage : { _1 : Text } | Haskell98 : {} >
-    ] : Optional types.Language
+  , default-language = [ (constructors types.Language).Haskell2010 {=} ] : Optional types.Language
   , license =
       prelude.types.Licenses.SPDX
         ( prelude.SPDX.license
@@ -23,6 +21,7 @@ in let cabalvars =
          , location = [ "https://github.com/hasktorch/hasktorch" ] : Optional Text
          }
     ] : List types.SourceRepo
+  , ghc-options = [ "-Wall", "-Wincomplete-uni-patterns", "-Wincomplete-record-updates"] -- , "-Wmissing-import-lists" ]
   , default-extensions =
       [ prelude.types.Extensions.LambdaCase True
       , prelude.types.Extensions.DataKinds True

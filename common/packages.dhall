@@ -1,117 +1,95 @@
    let prelude = ../dhall-to-cabal/dhall/prelude.dhall
 in let types = ../dhall-to-cabal/dhall/types.dhall
 in let fn = ./functions.dhall
+in let range
+  =  \(name  : Text)
+  -> \(left  : Text)
+  -> \(right : Text)
+  -> { package = name
+     , bounds =
+        prelude.unionVersionRanges
+          (prelude.thisVersion (prelude.v left))
+          (prelude.laterVersion (prelude.v right))
+     } : types.Dependency
+
+in let exactly
+  =  \(name  : Text)
+  -> \(version : Text)
+  -> { package = name
+     , bounds =
+        prelude.unionVersionRanges
+          (prelude.thisVersion (prelude.v version))
+          (prelude.laterVersion (prelude.v version))
+     } : types.Dependency
+
+in let rangeAndEarlierThan
+  =  \(name  : Text)
+  -> \(left  : Text)
+  -> \(right : Text)
+  -> \(earlierthan : Text)
+  -> { package = name
+     , bounds =
+         prelude.intersectVersionRanges
+           ( prelude.unionVersionRanges
+             ( prelude.thisVersion (prelude.v left))
+             ( prelude.laterVersion (prelude.v right)))
+           ( prelude.earlierVersion (prelude.v earlierthan))
+     } : types.Dependency
 in
-{ base =
-  { package = "base"
-  , bounds =
-      prelude.intersectVersionRanges
-        ( prelude.unionVersionRanges
-          (prelude.thisVersion (prelude.v "4.7"))
-          (prelude.laterVersion (prelude.v "4.7")))
-        (prelude.earlierVersion (prelude.v "5"))
-  } : types.Dependency
-, hspec =
-  { package = "hspec"
-  , bounds =
-      prelude.unionVersionRanges
-        (prelude.thisVersion (prelude.v "2.4.4"))
-        (prelude.laterVersion (prelude.v "2.4.4"))
-  } : types.Dependency
-
-, hasktorch-raw-th    = fn.anyver "hasktorch-raw-th"
-, hasktorch-raw-thc   = fn.anyver "hasktorch-raw-thc"
-, hasktorch-types-th  = fn.anyver "hasktorch-types-th"
-, hasktorch-types-thc = fn.anyver "hasktorch-types-thc"
-
+{ async                        = fn.anyver "async"
+, backprop                     = exactly "backprop" "0.2.5"
+, base                         = rangeAndEarlierThan "base" "4.7" "4.7" "5"
+, bytestring                   = fn.anyver "bytestring"
+, containers                   = fn.anyver "containers"
+, cryptonite                   = fn.anyver "cryptonite"
+, cuda                         = fn.anyver "cuda"
+, deepseq                      = exactly "deepseq" "1.3.0.0"
+, dimensions                   = exactly "dimensions" "1.0"
+, directory                    = fn.anyver "directory"
+, dlist                        = fn.anyver "dlist"
+, filepath                     = fn.anyver "filepath"
+, gd                           = fn.anyver "gd"
+, generic-lens                 = fn.anyver "generic-lens"
+-- FIXME: replace with thorin?
+, ghc-typelits-natnormalise    = fn.anyver "ghc-typelits-natnormalise"
+, hashable                     = fn.anyver "hashable"
+, hasktorch                    = fn.anyver "hasktorch"
+, hasktorch-indef              = fn.anyver "hasktorch-indef"
+, hasktorch-indef-floating     = fn.anyver "hasktorch-indef-floating"
+, hasktorch-indef-signed       = fn.anyver "hasktorch-indef-signed"
+, hasktorch-indef-unsigned     = fn.anyver "hasktorch-indef-unsigned"
+, hasktorch-raw-th             = fn.anyver "hasktorch-raw-th"
+, hasktorch-raw-thc            = fn.anyver "hasktorch-raw-thc"
 , hasktorch-signatures         = fn.anyver "hasktorch-signatures"
-, hasktorch-signatures-types   = fn.anyver "hasktorch-signatures-types"
 , hasktorch-signatures-partial = fn.anyver "hasktorch-signatures-partial"
 , hasktorch-signatures-support = fn.anyver "hasktorch-signatures-support"
-
-, hasktorch-indef          = fn.anyver "hasktorch-indef"
-, hasktorch-indef-floating = fn.anyver "hasktorch-indef-floating"
-, hasktorch-indef-signed   = fn.anyver "hasktorch-indef-signed"
-, hasktorch-indef-unsigned = fn.anyver "hasktorch-indef-unsigned"
-, hasktorch = fn.anyver "hasktorch"
-
-, QuickCheck = fn.anyver "QuickCheck"
-, containers = fn.anyver "containers"
-, deepseq =
-  { bounds =
-    prelude.unionVersionRanges
-      ( prelude.thisVersion (prelude.v "1.3.0.0") )
-      ( prelude.laterVersion (prelude.v "1.3.0.0") )
-  , package = "deepseq" }
-, dimensions =
-  { bounds =
-    prelude.unionVersionRanges
-      ( prelude.thisVersion (prelude.v "1.0"))
-      ( prelude.laterVersion (prelude.v "1.0"))
-  , package = "dimensions" }
-, managed =
-  { bounds =
-    prelude.intersectVersionRanges
-      ( prelude.unionVersionRanges
-        ( prelude.thisVersion (prelude.v "1.0.0"))
-        ( prelude.laterVersion (prelude.v "1.0.0")))
-      ( prelude.earlierVersion (prelude.v "1.1"))
-  , package = "managed" }
-, microlens =
-  { bounds =
-    prelude.unionVersionRanges
-      ( prelude.thisVersion (prelude.v "0.4.8.1"))
-      ( prelude.laterVersion (prelude.v "0.4.8.1"))
-  , package = "microlens" }
-, numeric-limits = fn.anyver "numeric-limits"
-, safe-exceptions =
-  { bounds =
-    prelude.unionVersionRanges
-      ( prelude.thisVersion (prelude.v "0.1.0.0"))
-      ( prelude.laterVersion (prelude.v "0.1.0.0"))
-  , package = "safe-exceptions" }
-, singletons =
-  { bounds =
-    prelude.unionVersionRanges
-      ( prelude.thisVersion (prelude.v "2.2"))
-      ( prelude.laterVersion (prelude.v "2.2"))
-  , package = "singletons" }
-, text =
-  { bounds =
-    prelude.unionVersionRanges
-      ( prelude.thisVersion (prelude.v "1.2.2.2"))
-      ( prelude.laterVersion (prelude.v "1.2.2.2"))
-  , package = "text" }
-, typelits-witnesses = { bounds =
-    prelude.unionVersionRanges
-      ( prelude.thisVersion (prelude.v "0.2.3.0"))
-      ( prelude.laterVersion (prelude.v "0.2.3.0"))
-  , package = "typelits-witnesses" }
-, backprop =
-  { bounds =
-    prelude.unionVersionRanges
-      (prelude.thisVersion (prelude.v "0.2.5"))
-      (prelude.laterVersion (prelude.v "0.2.5"))
-  , package = "backprop" }
-, ghc-typelits-natnormalise = fn.anyver "ghc-typelits-natnormalise"
-, generic-lens = fn.anyver "generic-lens"
-, hashable = fn.anyver "hashable"
-, mtl = fn.anyver "mtl"
-, microlens-platform = fn.anyver "microlens-platform"
-, microlens-th = fn.anyver "microlens-th"
-, monad-loops = fn.anyver "monad-loops"
-, time = fn.anyver "time"
-, transformers = fn.anyver "transformers"
-, cuda = fn.anyver "cuda"
-, vector = fn.anyver "vector"
-, directory = fn.anyver "directory"
-, filepath = fn.anyver "filepath"
-, async = fn.anyver "async"
-, SafeSemaphore = fn.anyver "SafeSemaphore"
-, mwc-random = fn.anyver "mwc-random"
-, primitive = fn.anyver "primitive"
-, list-t = fn.anyver "list-t"
-, gd = fn.anyver "gd"
-, JuicyPixels = fn.anyver "JuicyPixels"
+, hasktorch-signatures-types   = fn.anyver "hasktorch-signatures-types"
+, hasktorch-types-th           = fn.anyver "hasktorch-types-th"
+, hasktorch-types-thc          = fn.anyver "hasktorch-types-thc"
+, hasktorch-zoo                = fn.anyver "hasktorch-zoo"
+, hspec                        = exactly "hspec" "2.4.4"
+, HTTP                         = fn.anyver "HTTP"
+, JuicyPixels                  = fn.anyver "JuicyPixels"
+, list-t                       = fn.anyver "list-t"
+, managed                      = rangeAndEarlierThan "managed" "1.0.0" "1.0.0" "1.1"
+, microlens                    = exactly "microlens" "0.4.8.1"
+, microlens-platform           = fn.anyver "microlens-platform"
+, microlens-th                 = fn.anyver "microlens-th"
+, monad-loops                  = fn.anyver "monad-loops"
+, mtl                          = fn.anyver "mtl"
+, mwc-random                   = fn.anyver "mwc-random"
+, network-uri                  = fn.anyver "network-uri"
+, numeric-limits               = fn.anyver "numeric-limits"
+, primitive                    = fn.anyver "primitive"
+, QuickCheck                   = fn.anyver "QuickCheck"
+, SafeSemaphore                = fn.anyver "SafeSemaphore"
+, safe-exceptions              = exactly "safe-exceptions" "0.1.0.0"
+, singletons                   = exactly "singletons" "2.2"
+, text                         = exactly "text" "1.2.2.2"
+, time                         = fn.anyver "time"
+, transformers                 = fn.anyver "transformers"
+, typelits-witnesses           = exactly "typelits-witnesses" "0.2.3.0"
+, unordered-containers         = fn.anyver "unordered-containers"
+, vector                       = fn.anyver "vector"
 }
 
