@@ -1,8 +1,8 @@
 [submodule "dhall-to-cabal"]
   path = dhall-to-cabal
-  url = git://github.com/dhall-lang/dhall-to-cabal.git
+  url = https://github.com/dhall-lang/dhall-to-cabal.git
   branch = "1.3.1.0"
 [submodule "Prelude"]
   path = Prelude
-  url = git://github.com/dhall-lang/Prelude.git
+  url = https://github.com/dhall-lang/Prelude.git
   branch = "v3.0.0"
