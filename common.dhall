@@ -2,12 +2,12 @@
 in let types = ./dhall-to-cabal/dhall/types.dhall
 in let fn = ./common/functions.dhall
 in let cabalvars =
-  { author = "Hasktorch dev team (Sam Stites, Austin Huang)" : Text
+  { author = "Hasktorch dev team" : Text
+  , maintainer = "Sam Stites <fnz@fgvgrf.vb>, Austin Huang <nhfgvau@nyhz.zvg.rqh> - cipher:ROT13" : Text
   , bug-reports = "https://github.com/hasktorch/hasktorch/issues" : Text
   , version = prelude.v "0.0.1.0" : types.Version
   , build-type = [ prelude.types.BuildTypes.Simple {=} ] : Optional types.BuildType
   , homepage = "https://github.com/hasktorch/hasktorch#readme" : Text
-
   , default-language = [ (constructors types.Language).Haskell2010 {=} ] : Optional types.Language
   , license =
       prelude.types.Licenses.SPDX
@@ -22,6 +22,7 @@ in let cabalvars =
          }
     ] : List types.SourceRepo
   , ghc-options = [ "-Wall", "-Wincomplete-uni-patterns", "-Wincomplete-record-updates"] -- , "-Wmissing-import-lists" ]
+  , category = "Tensors, Machine Learning, AI"
   , default-extensions =
       [ prelude.types.Extensions.LambdaCase True
       , prelude.types.Extensions.DataKinds True
@@ -39,12 +40,13 @@ in
 , Package = prelude.defaults.Package
   // { version = cabalvars.version
      , author = cabalvars.author
+     , maintainer = cabalvars.maintainer
      , bug-reports = cabalvars.bug-reports
      , build-type = cabalvars.build-type
      , homepage = cabalvars.homepage
      , license = cabalvars.license
      , source-repos = cabalvars.source-repos
-     , category = "Tensors, Machine Learning"
+     , category = cabalvars.category
      }
 , Library = prelude.defaults.Library
   //
