@@ -53,29 +53,47 @@ in
     }
 , flags =
   { cuda =
-      { name = "cuda"
-      , description = "build with THC support"
-      , manual = False
-      , default = False
-      }
+    { name = "cuda"
+    , description = "build with THC support"
+    , manual = False
+    , default = False
+    }
   , lite =
-      { name = "lite"
-      , description = "only build with Double and Long support"
-      , manual = False
-      , default = False
-      }
+    { name = "lite"
+    , description = "only build with Double and Long support"
+    , manual = False
+    , default = False
+    }
   , gd =
-      { name = "gd"
-      , description = "use gd graphics library for loading images"
-      , manual = False
-      , default = False
-      }
+    { name = "gd"
+    , description = "use gd graphics library for loading images"
+    , manual = False
+    , default = False
+    }
   , debug =
-      { name = "debug"
-      , description = "turn on debugging flags"
-      , manual = False
-      , default = False
-      }
+    { name = "debug"
+    , description = "turn on debugging flags"
+    , manual = False
+    , default = False
+    }
+  , half =
+    { name = "half"
+    , description = "build with half support"
+    , manual = False
+    , default = False
+    }
+  , float =
+    { name = "float"
+    , description = "Build with float support. THC doesn't seem to build uniform Float types by default."
+    , manual = False
+    , default = False
+    }
+  , with_nn =
+    { name = "with_nn"
+    , description = "build with nn support"
+    , manual = False
+    , default = True
+    }
   }
 }
 
