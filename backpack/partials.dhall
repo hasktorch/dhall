@@ -13,6 +13,7 @@ in let partialLibrary =
       , packages.hasktorch-signatures-support
       , fn.anyver "hasktorch-signatures"
       ]
+      , default-extensions = [] : List types.Extensions
     }
 in let partialIndefLibrary =
   \(config : types.Config)
@@ -24,6 +25,7 @@ in let partialIndefLibrary =
       -- , packages.hasktorch-signatures
       , packages.hasktorch-indef
       ]
+      , default-extensions = [] : List types.Extensions
     }
 
 in let

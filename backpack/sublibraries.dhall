@@ -160,6 +160,7 @@ in
         , fn.anyver "hasktorch-indef"
         ]
       , reexported-modules = indef-unsigned-reexports
+      , default-extensions = [] : List types.Extensions
       , mixins =
         [ { package = "hasktorch-indef"
           , renaming =
@@ -192,6 +193,7 @@ in
         , fn.anyver "hasktorch-indef"
         ]
       , reexported-modules = indef-signed-reexports
+      , default-extensions = [] : List types.Extensions
       , mixins =
         [ { package = "hasktorch-indef"
           , renaming =
@@ -222,6 +224,7 @@ in
         , fn.anyver "hasktorch-indef"
         , packages.hasktorch-signatures-partial
         ]
+      , default-extensions = [] : List types.Extensions
       , reexported-modules = indef-floating-reexports
       }
   }
