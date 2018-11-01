@@ -157,7 +157,7 @@ in
       { build-depends =
         [ packages.base
         , packages.hasktorch-signatures-partial
-        , packages.hasktorch-indef
+        , fn.anyver "hasktorch-indef"
         ]
       , reexported-modules = indef-unsigned-reexports
       , mixins =
@@ -189,7 +189,7 @@ in
       { build-depends =
         [ packages.base
         , packages.hasktorch-signatures-partial
-        , packages.hasktorch-indef
+        , fn.anyver "hasktorch-indef"
         ]
       , reexported-modules = indef-signed-reexports
       , mixins =
@@ -219,7 +219,7 @@ in
     → common.Library config //
       { build-depends =
         [ packages.base
-        , packages.hasktorch-indef
+        , fn.anyver "hasktorch-indef"
         , packages.hasktorch-signatures-partial
         ]
       , reexported-modules = indef-floating-reexports

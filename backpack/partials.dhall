@@ -11,7 +11,7 @@ in let partialLibrary =
       [ packages.base
       , packages.hasktorch-signatures-partial
       , packages.hasktorch-signatures-support
-      , packages.hasktorch-signatures
+      , fn.anyver "hasktorch-signatures"
       ]
     }
 in let partialIndefLibrary =
