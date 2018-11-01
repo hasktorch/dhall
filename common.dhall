@@ -16,9 +16,9 @@ in let default-extensions =
     , prelude.types.Extensions.FlexibleContexts True
     , prelude.types.Extensions.CPP True
     ]
-    # (if config.impl (prelude.types.Compilers.GHC {=}) (prelude.orLaterVersion (v "8.6"))
-      then [prelude.types.Extensions.StarIsType False]
-      else [] : List types.Extensions)
+    -- # (if config.impl (prelude.types.Compilers.GHC {=}) (prelude.orLaterVersion (v "8.6"))
+    --   then [prelude.types.Extensions.StarIsType False]
+    --   else [] : List types.Extensions)
 
 in let cabalvars =
   { author = "Hasktorch dev team" : Text
