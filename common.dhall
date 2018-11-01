@@ -11,7 +11,7 @@ in let versions =
   , signatures = main-release
   , ffi        = main-release
   , types      = main-release
-  , codegen    = main-release
+  , codegen    = v "0.0.1.1" : types.Version
   }
 
 in let default-extensions =
