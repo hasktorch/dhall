@@ -1,19 +1,11 @@
    let prelude = ./dhall-to-cabal/dhall/prelude.dhall sha256:01509b3c6e9eaae4150a6e0ced124c2db191bf6046534a9d4973b7f05afd1d0a
 in let types = ./dhall-to-cabal/dhall/types.dhall sha256:cfd7597246781e8d4c6dfa5f0eabba75f14dc3f3deb7527973909b37c93f42f5
 in let fn = ./common/functions.dhall sha256:45e8bee44c93da6f4c47a3fdacc558b00858461325b807d4afc8bf0965716c33
+in let packages = ./common/packages.dhall
+in let hasktorch-packages = ./common/packages/hasktorch.dhall
+in let versions = hasktorch-packages.versions
+in let main-release = hasktorch-packages.main-release
 in let v = prelude.v
-in let main-release = v "0.0.1.0" : types.Version
-in let versions =
-  { hasktorch  = main-release
-  , zoo        = main-release
-  , examples   = main-release
-  , indef      = main-release
-  , signatures = main-release
-  , ffi        = main-release
-  , types      = main-release
-  , codegen    = v "0.0.1.1" : types.Version
-  }
-
 in let default-extensions =
   \(config : types.Config) ->
     [ prelude.types.Extensions.LambdaCase True

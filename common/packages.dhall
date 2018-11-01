@@ -1,5 +1,6 @@
    let prelude = ../dhall-to-cabal/dhall/prelude.dhall
 in let types = ../dhall-to-cabal/dhall/types.dhall
+in let hasktorch-packages = ./packages/hasktorch.dhall
 in let fn = ./functions.dhall
 in let gte
   =  \(name  : Text)
@@ -71,22 +72,4 @@ in
 , typelits-witnesses           = gte "typelits-witnesses"    "0.2.3"
 , unordered-containers         = gte "unordered-containers"  "0.2.9"
 , vector                       = gte "vector"               "0.12.0"
-
--- hasktorch projects
-, hasktorch                    = fn.anyver "hasktorch"
-, hasktorch-indef              = fn.anyver "hasktorch-indef"
-, hasktorch-indef-floating     = fn.anyver "hasktorch-indef-floating"
-, hasktorch-indef-signed       = fn.anyver "hasktorch-indef-signed"
-, hasktorch-indef-unsigned     = fn.anyver "hasktorch-indef-unsigned"
-, hasktorch-ffi-tests          = fn.anyver "hasktorch-ffi-tests"
-, hasktorch-ffi-th             = fn.anyver "hasktorch-ffi-th"
-, hasktorch-ffi-thc            = fn.anyver "hasktorch-ffi-thc"
-, hasktorch-signatures         = fn.anyver "hasktorch-signatures"
-, hasktorch-signatures-partial = fn.anyver "hasktorch-signatures-partial"
-, hasktorch-signatures-support = fn.anyver "hasktorch-signatures-support"
-, hasktorch-signatures-types   = fn.anyver "hasktorch-signatures-types"
-, hasktorch-types-th           = fn.anyver "hasktorch-types-th"
-, hasktorch-types-thc          = fn.anyver "hasktorch-types-thc"
-, hasktorch-zoo                = fn.anyver "hasktorch-zoo"
-}
-
+} // hasktorch-packages.constraints
