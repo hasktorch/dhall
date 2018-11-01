@@ -1,6 +1,6 @@
-   let prelude = ../dhall-to-cabal/dhall/prelude.dhall
-in let types =   ../dhall-to-cabal/dhall/types.dhall
-in let fn = ../common/functions.dhall
+   let prelude = ../dhall-to-cabal/dhall/prelude.dhall sha256:01509b3c6e9eaae4150a6e0ced124c2db191bf6046534a9d4973b7f05afd1d0a
+in let types = ../dhall-to-cabal/dhall/types.dhall sha256:cfd7597246781e8d4c6dfa5f0eabba75f14dc3f3deb7527973909b37c93f42f5
+in let fn = ../common/functions.dhall sha256:45e8bee44c93da6f4c47a3fdacc558b00858461325b807d4afc8bf0965716c33
 in let unsigned =
     λ(isth : Bool) →
     λ(ttype : Text) →

@@ -1,29 +1,32 @@
-   let prelude = ../dhall-to-cabal/dhall/prelude.dhall
-in let types =   ../dhall-to-cabal/dhall/types.dhall
-in  let common = ../common.dhall
-in  let packages = common.packages
-in  let cabalvars = common.cabalvars
-in  let fn = ../common/functions.dhall
-in  let partialLibrary = common.Library
-        // { build-depends =
-             [ packages.base
-             , packages.hasktorch-signatures-partial
-             , packages.hasktorch-signatures-support
-             , packages.hasktorch-signatures
-             ]
-           }
-in  let partialIndefLibrary = common.Library
-        // { build-depends =
-             [ packages.base
-             , packages.hasktorch-signatures-partial
-             , packages.hasktorch-signatures-support
-             -- , packages.hasktorch-signatures
-             , packages.hasktorch-indef
-             ]
-           }
+   let prelude = ../dhall-to-cabal/dhall/prelude.dhall sha256:01509b3c6e9eaae4150a6e0ced124c2db191bf6046534a9d4973b7f05afd1d0a
+in let types = ../dhall-to-cabal/dhall/types.dhall sha256:cfd7597246781e8d4c6dfa5f0eabba75f14dc3f3deb7527973909b37c93f42f5
+in let fn = ../common/functions.dhall sha256:45e8bee44c93da6f4c47a3fdacc558b00858461325b807d4afc8bf0965716c33
+in let common = ../common.dhall
+in let packages = common.packages
+in let cabalvars = common.cabalvars
+in let partialLibrary =
+  \(config : types.Config)
+  -> common.Library config //
+    { build-depends =
+      [ packages.base
+      , packages.hasktorch-signatures-partial
+      , packages.hasktorch-signatures-support
+      , packages.hasktorch-signatures
+      ]
+    }
+in let partialIndefLibrary =
+  \(config : types.Config)
+  -> common.Library config //
+    { build-depends =
+      [ packages.base
+      , packages.hasktorch-signatures-partial
+      , packages.hasktorch-signatures-support
+      -- , packages.hasktorch-signatures
+      , packages.hasktorch-indef
+      ]
+    }
 
-
-in  let
+in let
   signed-definites =
     [ fn.renameSig "Undefined" "NN"
     , fn.renameSig "Undefined" "Types.NN"
@@ -94,13 +97,13 @@ in
     { name = "hasktorch-indef-unsigned"
     , library =
       λ(config : types.Config)
-       → unsigned-indefiniteMixins "hasktorch-indef" partialIndefLibrary
+       → unsigned-indefiniteMixins "hasktorch-indef" (partialIndefLibrary config)
     }
 , unsigned =
     { name = "hasktorch-partial-unsigned"
     , library =
       λ(config : types.Config)
-       → unsigned-indefiniteMixins "hasktorch-signatures" partialLibrary
+       → unsigned-indefiniteMixins "hasktorch-signatures" (partialLibrary config)
     }
 , signed-definites = signed-definites
 , signed-indefiniteMixins = signed-indefiniteMixins
@@ -108,13 +111,13 @@ in
     { name = "hasktorch-indef-signed"
     , library =
       λ(config : types.Config)
-       → signed-indefiniteMixins "hasktorch-indef" partialIndefLibrary
+       → signed-indefiniteMixins "hasktorch-indef" (partialIndefLibrary config)
     }
 , signed =
     { name = "hasktorch-partial-signed"
     , library =
       λ(config : types.Config)
-       → signed-indefiniteMixins "hasktorch-signatures" partialLibrary
+       → signed-indefiniteMixins "hasktorch-signatures" (partialLibrary config)
     }
 , floating-reexported = floating-reexported
 , floating-indefiniteMixins = floating-indefiniteMixins
@@ -122,13 +125,13 @@ in
     { name = "hasktorch-indef-floating"
     , library =
       λ(config : types.Config)
-       → floating-indefiniteMixins "hasktorch-indef" partialIndefLibrary
+       → floating-indefiniteMixins "hasktorch-indef" (partialIndefLibrary config)
     }
 , floating =
     { name = "hasktorch-partial-floating"
     , library =
       λ(config : types.Config)
-       → floating-indefiniteMixins "hasktorch-signatures" partialLibrary
+       → floating-indefiniteMixins "hasktorch-signatures" (partialLibrary config)
     }
 }
 

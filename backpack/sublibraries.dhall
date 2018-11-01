@@ -1,12 +1,13 @@
-   let prelude = ../dhall-to-cabal/dhall/prelude.dhall
-in let types = ../dhall-to-cabal/dhall/types.dhall
+   let prelude = ../dhall-to-cabal/dhall/prelude.dhall sha256:01509b3c6e9eaae4150a6e0ced124c2db191bf6046534a9d4973b7f05afd1d0a
+in let types = ../dhall-to-cabal/dhall/types.dhall sha256:cfd7597246781e8d4c6dfa5f0eabba75f14dc3f3deb7527973909b37c93f42f5
+in let fn = ../common/functions.dhall sha256:45e8bee44c93da6f4c47a3fdacc558b00858461325b807d4afc8bf0965716c33
+in let List/map = ../Prelude/List/map sha256:310614c2949366621d7848e37c7845090d6c5b644234a1defe4d4048cf124fcd
 in let common = ../common.dhall
+
 in let mappings = ../common/mappings.dhall
 in let ReexportedModule = ../common/types/ReexportedModule.dhall
-in let List/map = ../Prelude/List/map
 in let packages = common.packages
 in let cabalvars = common.cabalvars
-in let fn = ../common/functions.dhall
 in let mknamespace =
   λ(isth : Bool)  →
   λ(ttype : Text) →
@@ -152,8 +153,7 @@ in
   { name = "hasktorch-indef-unsigned"
   , library =
     λ (config : types.Config)
-    → common.Library
-    //
+    → common.Library config //
       { build-depends =
         [ packages.base
         , packages.hasktorch-signatures-partial
@@ -185,8 +185,7 @@ in
   { name = "hasktorch-indef-signed"
   , library =
     λ (config : types.Config)
-    → common.Library
-    //
+    → common.Library config //
       { build-depends =
         [ packages.base
         , packages.hasktorch-signatures-partial
@@ -217,8 +216,7 @@ in
   { name = "hasktorch-indef-floating"
   , library =
     λ (config : types.Config)
-    → common.Library
-    //
+    → common.Library config //
       { build-depends =
         [ packages.base
         , packages.hasktorch-indef
