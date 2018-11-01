@@ -49,7 +49,7 @@ in
 , JuicyPixels                  = gte "JuicyPixels"             "3.3"
 , list-t                       = gte "list-t"                "1.0.1"
 , managed                      = gteBounded "managed"        "1.0.0" "1.1"
-, megaparsec                   = gte "megaparsec"            "6.5.0"
+, megaparsec                   = gteBounded "megaparsec"     "6.0.0" "8.0.0"
 , microlens                    = gte "microlens"             "0.4.8"
 , microlens-platform           = gte "microlens-platform"   "0.3.10"
 , microlens-th                 = gte "microlens-th"          "0.4.2"
